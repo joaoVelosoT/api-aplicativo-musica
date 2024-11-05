@@ -7,7 +7,8 @@ const UserService = {
     create : async(data) => {
         try {
             // Procurando no banco de dados se existe ja existe esse email
-            const existeEmail = await User.find({email : data.email});
+            const existeEmail = await User.findOne({email : data.email});
+            console.log(existeEmail);
             if(existeEmail){
                 return null
             }
