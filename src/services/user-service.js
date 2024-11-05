@@ -6,6 +6,11 @@ const jwt = require('jsonwebtoken');
 const UserService = {
     create : async(data) => {
         try {
+            // Procurando no banco de dados se existe ja existe esse email
+            const existeEmail = await User.find({email : data.email});
+            if(existeEmail){
+                return null
+            }
             // Criptografando a senha do usuario
             const senhaCript = await bcrypt.hash(data.senha, 10)
 
