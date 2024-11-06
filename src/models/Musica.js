@@ -12,7 +12,7 @@ const schemaMusica = new Schema({
     },
     artista : {
         type : String,
-        required : true
+        required : true 
     }
 });
 
