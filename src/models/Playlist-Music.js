@@ -10,6 +10,10 @@ const schemaPlaylistMusic = new Schema({
         type : String,
         required : true
     },
+    idUsuario : {
+        type : String,
+        required : true
+    },
 })
 
 const PlaylistMusic = mongoose.model('PlaylistMusica', schemaPlaylistMusic);

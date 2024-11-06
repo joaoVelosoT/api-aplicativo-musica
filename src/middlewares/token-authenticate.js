@@ -16,6 +16,7 @@ const TokenAuthenticate = (req,res,next) => {
                 msg : "Acesso negado"
             })
         }
+        console.log(user)
         req.user = user
         return next();
     })

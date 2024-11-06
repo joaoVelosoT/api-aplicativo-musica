@@ -24,7 +24,8 @@ const PlaylistMusicController = {
     },
     getAll : async (req,res) => {
         try {
-            const playMusics = await PlaylistMusicService.getAll();
+
+            const playMusics = await PlaylistMusicService.getAll(req.user.id);
 
             return res.status(200).json({
                 msg : "Todas as musicas",

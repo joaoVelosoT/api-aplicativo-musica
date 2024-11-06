@@ -38,6 +38,7 @@ const PlaylistMusicValidate = (req,res,next) => {
     const data = {
       idMusica : idMusica,
       idPlaylist : idPlaylist,
+      idUsuario : null
     }
 
     req.playMusic = data;

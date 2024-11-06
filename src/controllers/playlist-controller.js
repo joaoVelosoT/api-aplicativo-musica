@@ -8,7 +8,7 @@ const PlaylistController = {
 
         const data = {
           nome : req.body.nome,
-          idUsuario : req.user.id
+           
         }
 
         const playlist = await PlaylistService.create(data);

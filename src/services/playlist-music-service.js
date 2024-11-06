@@ -18,6 +18,9 @@ const PlaylistMusicService = {
                     return null
                 }
 
+                // Validar se existe já existe a musica na playlist
+                data.idUsuario = idUsuario
+
             return await PlaylistMusic.create(data);
 
         } catch (error) {
@@ -25,9 +28,11 @@ const PlaylistMusicService = {
             throw new Error("Erro, contate o suporte");
         }
     },
-    getAll : async () => {
+    getAll : async (idUsuario) => {
         try {
-            
+            console.log(idUsuario)
+            return PlaylistMusic.find({idUsuario : idUsuario});
+
         } catch (error) {
             console.error(error);
             throw new Error("Erro, contate o suporte");
