@@ -1,24 +1,22 @@
 const PlaylistMusicValidate = (req,res,next) => {
     const { idMusica, idPlaylist } = req.body;
 
+    if(req.method === 'PUT'){
+      
+      if(!idMusica && !idPlaylist){
+        return res.status(400).json({
+          msg: "Valide seus dados"
+      })
+      }
 
-    
-    // if(req.method === 'PUT'){
+      const data = {
+        idMusica : idMusica,
+        idPlaylist : idPlaylist,
+      }
+      req.playMusic = data;
+      return next();
 
-    //   if(!idMusica || typeof idMusica != 'string' && !idPlaylist || typeof idPlaylist != 'string'){
-    //     return res.status(400).json({
-    //       msg: "Valide seus dados"
-    //   })
-    //   }
-
-    //   const data = {
-    //     idMusica : idMusica,
-    //     idPlaylist : idPlaylist,
-    //   }
-    //   req.playMusic = data;
-    //   return next();
-
-    // }
+    }
 
 
 

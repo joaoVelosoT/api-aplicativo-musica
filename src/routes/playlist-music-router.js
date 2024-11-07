@@ -14,7 +14,7 @@ router.get('/', TokenAuthenticate, PlaylistMusicController.getAll);
 router.get('/:id', TokenAuthenticate,  PlaylistMusicValidateId, PlaylistMusicController.getOne);
 
 // PlaylistMusic update
-router.put('/:id', TokenAuthenticate, PlaylistMusicValidateId, PlaylistMusicController.update);
+router.put('/:id', TokenAuthenticate, PlaylistMusicValidateId, PlaylistMusicValidate, PlaylistMusicController.update);
 
 // PlaylistMusic delete
 router.delete('/:id', TokenAuthenticate, PlaylistMusicValidateId, PlaylistMusicController.delete);

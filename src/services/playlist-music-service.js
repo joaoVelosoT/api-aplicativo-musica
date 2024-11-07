@@ -9,16 +9,41 @@ const PlaylistMusicService = {
                 // Validar se existe a musica
                 const existeMusica = await MusicaService.getOne(data.idMusica);
                 if(!existeMusica){
-                    return null
+                    return {
+                        error: true,
+                        msg: "Musica não encontrada"
+                    }
                 }
 
                 // Validar se existe a playlist
                 const existePlaylist = await PlaylistService.getOne(data.idPlaylist, idUsuario);
                 if(!existePlaylist){
-                    return null
+                    return {
+                        error: true,
+                        msg: "Playlist não encontrada"
+                    };
                 }
 
                 // Validar se existe já existe a musica na playlist
+                const musicasPlaylist = await PlaylistMusicService.getAll(idUsuario);
+                const existeMusicPlaylist = () => {
+                    var retorno = null;
+                    musicasPlaylist.filter((musica) => {
+                        if(musica.idMusica === existeMusica.id){
+                            return retorno = true
+                        }
+                    });
+                    return retorno
+                } 
+                
+                // Se a musica ja existe na playlist, devolver mensagem de erro
+                if(existeMusicPlaylist()) {
+                    return {
+                        error: true,
+                        msg: "Essa musica ja existe na playlist"
+                    };;
+                }
+
                 data.idUsuario = idUsuario
 
             return await PlaylistMusic.create(data);
@@ -30,7 +55,8 @@ const PlaylistMusicService = {
     },
     getAll : async (idUsuario) => {
         try {
-            console.log(idUsuario)
+            
+            
             return PlaylistMusic.find({idUsuario : idUsuario});
 
         } catch (error) {
@@ -38,16 +64,68 @@ const PlaylistMusicService = {
             throw new Error("Erro, contate o suporte");
         }
     },
-    getOne : async () => {
+    getOne : async (idUsuario, id) => {
         try {
-            
+
+            return await PlaylistMusic.findOne({
+                idUsuario : idUsuario,
+                _id : id
+            })
+
         } catch (error) {
             console.error(error);
             throw new Error("Erro, contate o suporte");
         }
     },
-    update : async () => {
+    update : async (idUsuario, id, data) => {
         try {
+            // Validar se existe a musica
+            const existeMusica = await MusicaService.getOne(data.idMusica);
+            if(!existeMusica){
+                return {
+                    error: true,
+                    msg: "Musica não encontrada"
+                }
+            }
+
+            // Validar se existe a playlist
+            const existePlaylist = await PlaylistService.getOne(data.idPlaylist, idUsuario);
+            if(!existePlaylist){
+                return {
+                    error: true,
+                    msg: "Playlist não encontrada"
+                };
+            }
+
+            // Validar se existe já existe a musica na playlist
+            const musicasPlaylist = await PlaylistMusicService.getAll(idUsuario);
+            const existeMusicPlaylist = () => {
+                var retorno = null;
+                musicasPlaylist.filter((musica) => {
+                    if(musica.idMusica === existeMusica.id){
+                        return retorno = true
+                    }
+                });
+                return retorno
+            } 
+            
+            // Se a musica ja existe na playlist, devolver mensagem de erro
+            if(existeMusicPlaylist()) {
+                return {
+                    error: true,
+                    msg: "Essa musica ja existe na playlist"
+                };;
+            }
+            const playMusic = await PlaylistMusic.findOne({
+                idUsuario : idUsuario,
+                _id : id
+            })
+
+            if(!playMusic){
+                return null
+            }
+
+            return playMusic.updateOne(data);
             
         } catch (error) {
             console.error(error);

@@ -18,7 +18,7 @@ const UserValidate = (req, res, next) => {
       msg: "Valide seus dados",
     });
   }
-
+  c
   return next();
 };
 
