@@ -55,8 +55,6 @@ const PlaylistMusicService = {
     },
     getAll : async (idUsuario) => {
         try {
-            
-            
             return PlaylistMusic.find({idUsuario : idUsuario});
 
         } catch (error) {
@@ -67,6 +65,7 @@ const PlaylistMusicService = {
     getOne : async (idUsuario, id) => {
         try {
 
+            
             return await PlaylistMusic.findOne({
                 idUsuario : idUsuario,
                 _id : id
@@ -79,8 +78,10 @@ const PlaylistMusicService = {
     },
     update : async (idUsuario, id, data) => {
         try {
+
             // Validar se existe a musica
             const existeMusica = await MusicaService.getOne(data.idMusica);
+            console.log(existeMusica)
             if(!existeMusica){
                 return {
                     error: true,
@@ -122,7 +123,10 @@ const PlaylistMusicService = {
             })
 
             if(!playMusic){
-                return null
+                return {
+                    error: true,
+                    msg: "Não foi encontrada a musica na playlist"
+                }
             }
 
             return playMusic.updateOne(data);
@@ -132,9 +136,23 @@ const PlaylistMusicService = {
             throw new Error("Erro, contate o suporte");
         }
     },
-    delete : async () => {
+    delete : async (idUsuario, id) => {
         try {
             
+            const playMusic = await PlaylistMusic.findOne({
+                idUsuario : idUsuario,
+                _id : id
+            })
+
+            if(!playMusic){
+                return {
+                    error : true,
+                    msg : "Não foi encontrada a musica na playlist"
+                }
+            }
+
+            return await playMusic.deleteOne();
+
         } catch (error) {
             console.error(error);
             throw new Error("Erro, contate o suporte");

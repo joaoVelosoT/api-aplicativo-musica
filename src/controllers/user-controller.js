@@ -4,7 +4,7 @@ const UserController = {
   create: async (req, res) => {
     try {
 
-      const data = req.user
+      const data = req.user;
 
       const user = await UserService.create(data);
 

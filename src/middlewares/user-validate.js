@@ -18,7 +18,14 @@ const UserValidate = (req, res, next) => {
       msg: "Valide seus dados",
     });
   }
-  c
+  
+  const data = {
+    nome: nome,
+    email : email,
+    senha : senha
+  }
+
+  req.user = data
   return next();
 };
 

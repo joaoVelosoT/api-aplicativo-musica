@@ -1,6 +1,6 @@
 const {Router} = require('express');
 const PlaylistMusicController = require('../controllers/playlist-music-controller');
-const { PlaylistMusicValidate, PlaylistMusicValidateId } = require('../middlewares/playlist-music-validate');
+const { PlaylistMusicValidate, PlaylistMusicValidateId, PlaylistMusicUpdateValidate } = require('../middlewares/playlist-music-validate');
 const TokenAuthenticate = require('../middlewares/token-authenticate');
 const router = Router();
 
@@ -14,7 +14,7 @@ router.get('/', TokenAuthenticate, PlaylistMusicController.getAll);
 router.get('/:id', TokenAuthenticate,  PlaylistMusicValidateId, PlaylistMusicController.getOne);
 
 // PlaylistMusic update
-router.put('/:id', TokenAuthenticate, PlaylistMusicValidateId, PlaylistMusicValidate, PlaylistMusicController.update);
+router.put('/:id', TokenAuthenticate, PlaylistMusicValidateId, PlaylistMusicUpdateValidate, PlaylistMusicController.update);
 
 // PlaylistMusic delete
 router.delete('/:id', TokenAuthenticate, PlaylistMusicValidateId, PlaylistMusicController.delete);

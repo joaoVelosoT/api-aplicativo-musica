@@ -71,16 +71,18 @@ const PlaylistMusicController = {
 
       const playMusic = await PlaylistMusicService.update(idUsuario, id, data);
 
-      if (!playMusic) {
-        return res.status(404).json({
-          msg: "Não foi encontrada a musica na playlist",
-        });
+
+      if(playMusic.error){
+        return res.status(400).json({
+          msg : playMusic.msg
+        })
       }
 
       return res.status(200).json({
         msg: "Musica atualizada na playlist",
         playMusic,
       });
+
     } catch (error) {
       console.error(error);
       return res.status(500).json({
@@ -90,13 +92,23 @@ const PlaylistMusicController = {
   },
   delete: async (req, res) => {
     try {
-      const playMusic = await PlaylistMusicService.delete(req.params.id);
 
-      if (!playMusic) {
-        return res.status(404).json({
-          msg: "Não foi encontrada a musica na playlist",
-        });
+      const idUsuario = req.user.id;
+      const { id } = req.params;
+
+      const playMusic = await PlaylistMusicService.delete(idUsuario, id);
+
+      if(playMusic.error){
+        return res.status(400).json({
+          msg : playMusic.msg
+        })
       }
+
+      // if (!playMusic) {
+      //   return res.status(404).json({
+      //     msg: "Não foi encontrada a musica na playlist",
+      //   });
+      // }
 
       return res.status(200).json({
         msg: "Musica deletada na playlist",
