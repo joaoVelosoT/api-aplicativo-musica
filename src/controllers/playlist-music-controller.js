@@ -121,6 +121,20 @@ const PlaylistMusicController = {
       });
     }
   },
+  getByPlaylist : async (req,res) => {
+
+    const {idPlaylist} = req.params;
+    const idUsuario = req.user.id;
+
+    const playMusic = await PlaylistMusicService.getByPlaylist(idUsuario, idPlaylist);
+
+    return res.status(200).json({
+      msg : "Musicas da playlist",
+      playMusic
+    })
+
+
+  }
 };
 
 module.exports = PlaylistMusicController;

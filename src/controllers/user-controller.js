@@ -66,6 +66,7 @@ const UserController = {
   },
   update: async (req, res) => {
     try {
+
       const {id} = req.params;
 
       const data = {
@@ -76,9 +77,9 @@ const UserController = {
 
       const user = await UserService.update(id, data);
 
-      if(!user){
-        return res.status(404).json({
-          msg : "Usuario nao encontrado"
+      if(user.error){
+        return res.status(user.code).json({
+          msg : user.msg
         })
       }
 

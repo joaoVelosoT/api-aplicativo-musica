@@ -51,6 +51,16 @@ const UserService = {
     },
     update : async(id, data) => {
         try {
+
+            const user = await User.findOne({email : data.email});
+
+            if(user){
+                return {
+                    error : true,
+                    code : 404,
+                    msg : "Conta ja existente"
+                }
+            }
             return await User.findByIdAndUpdate(id, data);
         } catch (error) {
             console.error(error);

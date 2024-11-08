@@ -1,4 +1,5 @@
 const Playlist = require("../models/Playlist");
+const PlaylistMusicService = require("./playlist-music-service");
 
 const PlaylistService = {
     create : async (data) => {
@@ -29,9 +30,11 @@ const PlaylistService = {
             const playlist = await Playlist.findOne({
                 _id : id,
                 idUsuario : idUsuario
-            })
+            });
 
             return playlist
+            
+            
         } catch (error) {
             console.error(error);
             throw new Error("Erro, contate o suporte");
@@ -63,6 +66,8 @@ const PlaylistService = {
                 _id : id,
                 idUsuario : idUsuario
             })
+
+            
 
             return await playlist.deleteOne();
         } catch (error) {

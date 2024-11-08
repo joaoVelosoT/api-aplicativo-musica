@@ -62,17 +62,23 @@ const PlaylistMusicUpdateValidate = (req, res, next) => {
   }
 
   // Validando se o id enviado esta correto, pos o id do mongodb e composto por 24 caracteres
-  if (idMusica.length > 24 || idMusica.length < 24) {
-    return res.status(400).json({
-      msg: "O seu id tem que ter 24 caracteres",
-    });
+  if(idMusica){
+    if (idMusica.length > 24 || idMusica.length < 24) {
+      return res.status(400).json({
+        msg: "O seu id tem que ter 24 caracteres",
+      });
+    }
   }
+  
 
-  if (idPlaylist.length > 24 || idPlaylist.length < 24) {
-    return res.status(400).json({
-      msg: "O seu id tem que ter 24 caracteres",
-    });
+  if(idPlaylist){
+    if (idPlaylist.length > 24 || idPlaylist.length < 24) {
+      return res.status(400).json({
+        msg: "O seu id tem que ter 24 caracteres",
+      });
+    }
   }
+  
   
 
   const data = {

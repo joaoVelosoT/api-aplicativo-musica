@@ -1,6 +1,7 @@
 const {Router} = require('express');
 const UserController = require('../controllers/user-controller');
 const { UserValidate, UserValidateID, UserValidadeLogin } = require('../middlewares/user-validate');
+const TokenAuthenticate = require('../middlewares/token-authenticate');
 const router = Router(); 
 
 // Create user
@@ -16,7 +17,7 @@ router.get('/:id', UserValidateID, UserController.getOne);
 router.put('/:id', UserValidateID, UserController.update);
 
 // Delete user
-router.delete('/:id', UserValidateID, UserController.delete);
+router.delete('/:id', UserValidateID, TokenAuthenticate, UserController.delete);
 
 // Login user
 router.post('/login', UserValidadeLogin, UserController.login);

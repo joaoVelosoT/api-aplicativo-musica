@@ -19,4 +19,7 @@ router.put('/:id', TokenAuthenticate, PlaylistMusicValidateId, PlaylistMusicUpda
 // PlaylistMusic delete
 router.delete('/:id', TokenAuthenticate, PlaylistMusicValidateId, PlaylistMusicController.delete);
 
+// PlaylistMusic getByPlaylist
+router.get('/getbyplaylist/:id', TokenAuthenticate, PlaylistMusicValidateId, PlaylistMusicController.getByPlaylist);
+
 module.exports = router;
