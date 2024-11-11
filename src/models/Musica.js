@@ -6,6 +6,7 @@ const schemaMusica = new Schema({
         type : String,
         required : true
     },
+    // imagem 
     genero : {
         type : String,
         required : true

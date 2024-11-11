@@ -1,6 +1,7 @@
 const PlaylistMusic = require("../models/Playlist-Music");
 const MusicaService = require("./musica-service");
 const PlaylistService = require("./playlist-service");
+
 const PlaylistMusicService = {
   create: async (data, idUsuario) => {
     try {
@@ -12,12 +13,13 @@ const PlaylistMusicService = {
           msg: "Musica não encontrada",
         };
       }
-      
+
       // Validar se existe a playlist
-      console.log(data.idPlaylist, idUsuario)
-      const existePlaylist = await PlaylistService.getOne(data.idPlaylist, idUsuario);
-      
-      
+
+      const existePlaylist = await PlaylistService.getOne(
+        data.idPlaylist,
+        idUsuario
+      );
       if (!existePlaylist) {
         return {
           error: true,
@@ -74,7 +76,6 @@ const PlaylistMusicService = {
   },
   update: async (idUsuario, id, data) => {
     try {
-        
       // Validar se existe a musica
       if (data.idMusica) {
         var existeMusica = await MusicaService.getOne(data.idMusica);
@@ -158,23 +159,30 @@ const PlaylistMusicService = {
       throw new Error("Erro, contate o suporte");
     }
   },
-  getByPlaylist : async (idUsuario, idPlaylist) => {
+  getByPlaylist: async (idUsuario, idPlaylist) => {
     try {
-      
+      // Validar se existe a playlist
+      console.log(idPlaylist);
+
+      var existePlaylist = await PlaylistService.getOne(idPlaylist, idUsuario);
+      if (!existePlaylist) {
+        return {
+          error: true,
+          msg: "Playlist não encontrada",
+        };
+      }
+
       const musicPlay = await PlaylistMusic.find({
-        idUsuario : idUsuario,
-        idPlaylist : idPlaylist
-      })
+        idUsuario: idUsuario,
+        idPlaylist: idPlaylist,
+      });
 
-      return musicPlay
-
-
+      return musicPlay;
     } catch (error) {
       console.error(error);
       throw new Error("Erro, contate o suporte");
-      
     }
-  }
+  },
 };
 
 module.exports = PlaylistMusicService;

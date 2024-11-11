@@ -123,10 +123,16 @@ const PlaylistMusicController = {
   },
   getByPlaylist : async (req,res) => {
 
-    const {idPlaylist} = req.params;
+    const {id} = req.params;
     const idUsuario = req.user.id;
 
-    const playMusic = await PlaylistMusicService.getByPlaylist(idUsuario, idPlaylist);
+    const playMusic = await PlaylistMusicService.getByPlaylist(idUsuario, id);
+
+    if(playMusic.error){
+      return res.status(404).json({
+        msg : playMusic.msg
+      })
+    }
 
     return res.status(200).json({
       msg : "Musicas da playlist",
