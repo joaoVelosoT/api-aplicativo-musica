@@ -1,19 +1,23 @@
 const Playlist = require("../models/Playlist");
 const UserService = require("./user-service");
-// const PlaylistMusicService = require("./playlist-music-service");
 
 const PlaylistService = {
   create: async (data) => {
     try {
+
+        // Buscando o user
       const user = await UserService.getOne(data.idUsuario);
+
+        // Se não achar o user, devolver com o erro
       if (!user) {
         return {
-            error : true,
-            code : 404,
-            msg : "Usuario não encontrado"
-        }
+          error: true,
+          code: 404,
+          msg: "Usuario não encontrado",
+        };
       }
 
+      // Criando a playlist
       const playlist = await Playlist.create(data);
 
       return {
@@ -21,14 +25,15 @@ const PlaylistService = {
         code: 201,
         msg: "Playlist criada com sucesso",
         playlist: {
-            _id : playlist._id,
+          _id: playlist._id,
           nomePlaylist: playlist.nome,
-        
+          imagem: playlist.imagem,
+          descricao: playlist.descricao,
         },
-        user : {
-            _id : user._id,
-            nomeUsuario : user.nome 
-        }
+        user: {
+          _id: user._id,
+          nomeUsuario: user.nome,
+        },
       };
     } catch (error) {
       console.error(error);

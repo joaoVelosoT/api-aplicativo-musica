@@ -4,14 +4,9 @@ const PlaylistController = {
   create: async (req, res) => {
     try {
 
-        // console.log(req.user);
+        req.playlist.idUsuario = req.user.id
 
-        const data = {
-          nome : req.body.nome,
-          idUsuario : req.user.id
-        }
-
-        const playlist = await PlaylistService.create(data);
+        const playlist = await PlaylistService.create(req.playlist);
 
         if(playlist.error){
           return res.status(playlist.code).json({

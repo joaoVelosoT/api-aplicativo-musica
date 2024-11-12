@@ -1,12 +1,32 @@
 const PlaylistValidate = (req,res,next) => {
 
-    const {nome, idUsuario} = req.body;
+    const {nome, imagem, descricao} = req.body;
 
     if(!nome || typeof nome != 'string'){
         return res.status(400).json({
             msg: "Valide seus dados"
         })
     };
+
+    if(!imagem || typeof imagem != 'string'){
+        return res.status(400).json({
+            msg: "Valide seus dados"
+        })
+    };
+
+    if(!descricao || typeof descricao != 'string'){
+        return res.status(400).json({
+            msg: "Valide seus dados"
+        })
+    };
+
+    const data = {
+        nome : nome,
+        imagem : imagem,
+        descricao : descricao
+    }
+
+    req.playlist = data;
 
 
     return next();
