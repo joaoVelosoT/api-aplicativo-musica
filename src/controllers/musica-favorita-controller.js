@@ -44,10 +44,23 @@ const MusicaFavoritaController = {
             })
         }
     },
-    getOne : (req,res) =>  {
+    getOne : async(req,res) => {
         try {
             
-            const id = req.user
+            const idUsuario = req.user.id;
+            const {id} = req.params;
+            const musicaFavorita = await MusicaFavoritaService.getOne(idUsuario, id);
+
+            if(!musicaFavorita){
+                return res.status(404).json({
+                    msg : "Musica favorita não encontrada"
+                })
+            }
+
+            return res.status(200).json({
+                msg : "Musica favorita encontrada com sucesso",
+                musicaFavorita
+            })
         } catch (error) {
             console.error(error);
             return res.status(500).json({
@@ -55,8 +68,26 @@ const MusicaFavoritaController = {
             })
         }
     },
-    update : (req,res) =>  {
+    update : async (req,res) =>  {
         try {
+            const idUsuario = req.user.id;
+
+            const { id } = req.params;
+
+            const data = req.musicaFavorita
+
+            const musicaFavorita = await MusicaFavoritaService.update(idUsuario, id, data);
+            
+            if(musicaFavorita.error){
+                return res.status(musicaFavorita.code).json({
+                   msg : musicaFavorita.msg
+                })
+            }
+
+            return res.status(200).json({
+                msg : "Musica favorita atualizada com sucesso",
+                musicaFavorita
+            })
             
         } catch (error) {
             console.error(error);
@@ -65,9 +96,22 @@ const MusicaFavoritaController = {
             })
         }
     },
-    delete : (req,res) =>  {
+    delete : async(req,res) =>  {
         try {
-            
+            const idUsuario = req.user.id;
+            const { id } = req.params;
+
+            const musicaFavorita = await MusicaFavoritaService.delete(idUsuario, id);
+
+            if(musicaFavorita.error){
+                return res.status(musicaFavorita.code).json({
+                  msg : musicaFavorita.msg
+                })
+              }
+            return res.status(200).json({
+                msg : "Musica Favorita deletada com sucesso",
+                musicaFavorita
+            })
         } catch (error) {
             console.error(error);
             return res.status(500).json({

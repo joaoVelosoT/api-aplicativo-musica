@@ -12,13 +12,13 @@ router.post('/', TokenAuthenticate, MusicaFavoritaValidate,MusicaFavoritaControl
 router.get('/', TokenAuthenticate, MusicaFavoritaController.getAll);
 
 // GetOne musica favorita
-router.get('/:id', TokenAuthenticate, MusicaFavoritaValidateID);
+router.get('/:id', TokenAuthenticate, MusicaFavoritaValidateID, MusicaFavoritaController.getOne);
 
 // Update Musica favorita
-router.put('/:id', TokenAuthenticate, MusicaFavoritaValidateID);
+router.put('/:id', TokenAuthenticate, MusicaFavoritaValidateID, MusicaFavoritaValidate, MusicaFavoritaController.update);
 
 // Delete musica favorita
-router.delete('/:id', TokenAuthenticate);
+router.delete('/:id', TokenAuthenticate, MusicaFavoritaValidateID, MusicaFavoritaController.delete);
 
 
 

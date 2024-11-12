@@ -7,8 +7,6 @@ const MusicaFavoritaValidate = (req, res, next) => {
     });
   }
 
-  
-
   if (!validateId(idMusica)) {
     return res.status(400).json({
       msg: "Valide seus dados",

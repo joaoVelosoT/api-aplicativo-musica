@@ -8,6 +8,10 @@ const userSchema = new Schema({
         required : true,
         trim : true
     },
+    fotoPerfil : {
+        type : String,
+        required : false
+    },
     email : {
         type : String,
         required : true,

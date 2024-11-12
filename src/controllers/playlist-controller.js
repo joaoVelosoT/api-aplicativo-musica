@@ -13,9 +13,17 @@ const PlaylistController = {
 
         const playlist = await PlaylistService.create(data);
 
-        return res.status(200).json({
-          msg : "Playlist criada com sucesso",
-          playlist
+        if(playlist.error){
+          return res.status(playlist.code).json({
+            msg : playlist.msg
+          })
+        }
+
+
+        return res.status(playlist.code).json({
+          msg : playlist.msg,
+          playlist : playlist.playlist,
+          user : playlist.user
         })
 
     } catch (error) {

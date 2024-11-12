@@ -6,9 +6,15 @@ const schemaPlaylist = new Schema({
         type : String,
         required : true
     },
-    // categoria
-    // imagem
-    // tags
+
+    imagem : {
+        type : String,
+        required : true
+    },
+    descricao : {
+        type : String,
+        required : false
+    },
     idUsuario : {
         type : String,
         required : true

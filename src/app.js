@@ -1,8 +1,8 @@
- 
+require('dotenv').config();
 const express = require('express');
 const connectDB = require('./config/database');
 const app = express();
-const PORT = process.env.PORT 
+const PORT = process.env.PORT || 7050
 const router = require('./routes/router');
 
 
@@ -14,7 +14,7 @@ app.listen(PORT, async() => {
     try {
         await connectDB();
         console.log("---------------------------------");
-        console.log("Servidor no ar");
+        console.log(`Servidor rodando na porta ${PORT}`);
         console.log("---------------------------------");
 
     } catch (error) {

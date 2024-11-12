@@ -90,7 +90,7 @@ const UserService = {
             const token = await jwt.sign({
                 id : user._id,
                 email : user.email
-            }, process.env.SECRET,{ expiresIn : '1h'})
+            }, process.env.SECRET,{ expiresIn : '10h'})
 
             return token
         } catch (error) {
