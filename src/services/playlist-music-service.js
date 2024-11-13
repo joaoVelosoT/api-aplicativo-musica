@@ -20,6 +20,9 @@ const PlaylistMusicService = {
         data.idPlaylist,
         idUsuario
       );
+
+      console.log(existePlaylist);
+      
       if (!existePlaylist) {
         return {
           error: true,
@@ -48,8 +51,23 @@ const PlaylistMusicService = {
       }
 
       data.idUsuario = idUsuario;
+      const playlistMusic = await PlaylistMusic.create(data);
+      return {
+        _id : playlistMusic._id,
+        playlist : {
+          idPlaylist : existePlaylist.playlist._id,
+          nomePlaylist : existePlaylist.playlist.nomePlaylist
+        },
+        musica : {
+          idMusica : existeMusica._id,
+          nomeMusica : existeMusica.nome
+        },
+        user : {
+          idUser : existePlaylist.user._id,
+          nomeUser : existePlaylist.user.nomeUsuario
+        }
 
-      return await PlaylistMusic.create(data);
+      }
     } catch (error) {
       console.error(error);
       throw new Error("Erro, contate o suporte");
@@ -57,7 +75,22 @@ const PlaylistMusicService = {
   },
   getAll: async (idUsuario) => {
     try {
-      return PlaylistMusic.find({ idUsuario: idUsuario });
+
+      const playlistMusic = await PlaylistMusic.find({ idUsuario: idUsuario });
+
+      const playlistMusicDetalhada = [];
+
+      for(const playMusic of playlistMusic){
+
+         const playlist = await PlaylistService.getOne(playMusic.idPlaylist, idUsuario);
+
+        console.log(playlist)
+        // console.log(playMusic.idPlaylist);
+
+      }
+
+      return playlistMusic
+
     } catch (error) {
       console.error(error);
       throw new Error("Erro, contate o suporte");

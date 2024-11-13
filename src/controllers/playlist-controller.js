@@ -54,15 +54,16 @@ const PlaylistController = {
 
       const playlist = await PlaylistService.getOne(id, idUsuario);
 
-      if(!playlist){
-        return res.status(404).json({
-          msg : "Playlist não encontrada"
+      if(playlist.error){
+        return res.status(playlist.code).json({
+          msg : playlist.msg
         })
       };
 
       return res.status(200).json({
-          msg : "Playlist encontrada",
-          playlist
+          msg : playlist.msg,
+          playlist : playlist.playlist,
+          user : playlist.user
       })
 
     } catch (error) {
@@ -93,7 +94,7 @@ const PlaylistController = {
       };
 
       return res.status(200).json({
-        msg : "Playlist atualizada",
+        msg : "Playlist atualizada com sucesso",
         playlist
     })
 
