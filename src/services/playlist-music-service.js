@@ -22,7 +22,7 @@ const PlaylistMusicService = {
       );
 
       console.log(existePlaylist);
-      
+
       if (!existePlaylist) {
         return {
           error: true,
@@ -53,21 +53,20 @@ const PlaylistMusicService = {
       data.idUsuario = idUsuario;
       const playlistMusic = await PlaylistMusic.create(data);
       return {
-        _id : playlistMusic._id,
-        playlist : {
-          idPlaylist : existePlaylist.playlist._id,
-          nomePlaylist : existePlaylist.playlist.nomePlaylist
+        _id: playlistMusic._id,
+        playlist: {
+          idPlaylist: existePlaylist.playlist._id,
+          nomePlaylist: existePlaylist.playlist.nomePlaylist,
         },
-        musica : {
-          idMusica : existeMusica._id,
-          nomeMusica : existeMusica.nome
+        musica: {
+          idMusica: existeMusica._id,
+          nomeMusica: existeMusica.nome,
         },
-        user : {
-          idUser : existePlaylist.user._id,
-          nomeUser : existePlaylist.user.nomeUsuario
-        }
-
-      }
+        user: {
+          idUser: existePlaylist.user._id,
+          nomeUser: existePlaylist.user.nomeUsuario,
+        },
+      };
     } catch (error) {
       console.error(error);
       throw new Error("Erro, contate o suporte");
@@ -75,22 +74,43 @@ const PlaylistMusicService = {
   },
   getAll: async (idUsuario) => {
     try {
-
+      // Pegando todas as musicas de todas as playlist
       const playlistMusic = await PlaylistMusic.find({ idUsuario: idUsuario });
 
+      // Criando uma array para colocar os dados detalhados
       const playlistMusicDetalhada = [];
 
-      for(const playMusic of playlistMusic){
+      // Iniciando um for para percorrer cada dados e adicionar o detalhe a cada um
+      for (const playMusic of playlistMusic) {
+        const playlist = await PlaylistService.getOne(
+          playMusic.idPlaylist,
+          idUsuario
+        );
 
-         const playlist = await PlaylistService.getOne(playMusic.idPlaylist, idUsuario);
+        const musica = await MusicaService.getOne(playMusic.idMusica);
 
-        console.log(playlist)
-        // console.log(playMusic.idPlaylist);
+        if (!playlist.error) {
+          const obj = {
+            _id: playMusic._id,
+            playlist: {
+              idPlaylist: playlist.playlist._id,
+              nomePlaylist: playlist.playlist.nomePlaylist,
+            },
+            musica: {
+              idMusica: musica._id,
+              nomeMusica: musica.nome,
+            },
+            user: {
+              idUser: playlist.user._id,
+              nomeUser: playlist.user.nomeUsuario,
+            },
+          };
 
+          playlistMusicDetalhada.push(obj);
+        }
       }
 
-      return playlistMusic
-
+      return playlistMusicDetalhada;
     } catch (error) {
       console.error(error);
       throw new Error("Erro, contate o suporte");
@@ -98,10 +118,41 @@ const PlaylistMusicService = {
   },
   getOne: async (idUsuario, id) => {
     try {
-      return await PlaylistMusic.findOne({
+      const playMusic = await PlaylistMusic.findOne({
         idUsuario: idUsuario,
         _id: id,
       });
+
+      const musica = await MusicaService.getOne(playMusic.idMusica);
+
+      if (!musica) {
+        return {
+          error: true,
+          code: 404,
+          msg: "Musica não encontrada",
+        };
+      }
+
+      const playlist = await PlaylistService.getOne(
+        playMusic.idPlaylist,
+        idUsuario
+      );
+
+      return {
+        _id: playMusic._id,
+        playlist: {
+          idPlaylist: playlist.playlist._id,
+          nomePlaylist: playlist.playlist.nomePlaylist,
+        },
+        musica: {
+          idMusica: musica._id,
+          nomeMusica: musica.nome,
+        },
+        user: {
+          idUser: playlist.user._id,
+          nomeUser: playlist.user.nomeUsuario,
+        },
+      };
     } catch (error) {
       console.error(error);
       throw new Error("Erro, contate o suporte");
@@ -194,23 +245,47 @@ const PlaylistMusicService = {
   },
   getByPlaylist: async (idUsuario, idPlaylist) => {
     try {
-      // Validar se existe a playlist
-      console.log(idPlaylist);
-
-      var existePlaylist = await PlaylistService.getOne(idPlaylist, idUsuario);
-      if (!existePlaylist) {
-        return {
-          error: true,
-          msg: "Playlist não encontrada",
-        };
-      }
-
-      const musicPlay = await PlaylistMusic.find({
+      // Pegando todas as musicas de todas as playlist
+      const playlistMusic = await PlaylistMusic.find({
         idUsuario: idUsuario,
         idPlaylist: idPlaylist,
       });
 
-      return musicPlay;
+      // Criando uma array para colocar os dados detalhados
+      const playlistMusicDetalhada = [];
+
+      // Iniciando um for para percorrer cada dados e adicionar o detalhe a cada um
+      for (const playMusic of playlistMusic) {
+        const playlist = await PlaylistService.getOne(
+          playMusic.idPlaylist,
+          idUsuario
+        );
+
+        const musica = await MusicaService.getOne(playMusic.idMusica);
+
+        if (!playlist.error) {
+          const obj = {
+            _id: playMusic._id,
+            playlist: {
+              idPlaylist: playlist.playlist._id,
+              nomePlaylist: playlist.playlist.nomePlaylist,
+            },
+            musica: {
+              idMusica: musica._id,
+              nomeMusica: musica.nome,
+            },
+            user: {
+              idUser: playlist.user._id,
+              nomeUser: playlist.user.nomeUsuario,
+            },
+          };
+
+          playlistMusicDetalhada.push(obj);
+        }
+      }
+
+      // console.log(playlistMusicDetalhada);
+      return playlistMusicDetalhada;
     } catch (error) {
       console.error(error);
       throw new Error("Erro, contate o suporte");
