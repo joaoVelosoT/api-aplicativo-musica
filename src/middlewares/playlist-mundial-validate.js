@@ -13,17 +13,26 @@ const PlaylistMundialValidate = (req, res, next) => {
     });
   }
 
-  if (!descricao || typeof descricao != "string") {
-    return res.status(400).json({
-      msg: "Revise seus dados",
-    });
+  // if (typeof descricao != "string") {
+  //   return res.status(400).json({
+  //     msg: "Revise seus dados",
+  //   });
+  // }
+
+  // if (typeof categoria != "string") {
+  //   return res.status(400).json({
+  //     msg: "Revise seus dados",
+  //   });
+  // }
+
+  const data = {
+    nome : nome,
+    imagem : imagem,
+    descricao : descricao,
+    categoria : categoria 
   }
 
-  if (!categoria || typeof categoria != "string") {
-    return res.status(400).json({
-      msg: "Revise seus dados",
-    });
-  }
+  req.playlist = data
 
   return next();
 };
