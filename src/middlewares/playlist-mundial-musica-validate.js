@@ -7,6 +7,12 @@ const PlaylistMundialMusicaValidate = (req, res, next) => {
     });
   }
 
+  const data = {
+    idMusica : idMusica,
+    idPlaylist : idPlaylist
+  }
+  req.musicPlaylist = data 
+
   return next();
 };
 

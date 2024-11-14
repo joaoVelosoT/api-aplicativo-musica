@@ -19,7 +19,22 @@ const MusicaService = {
   },
   getOne: async (id) => {
     try {
-      return await Musica.findById(id);
+
+      const musica = await Musica.findById(id);
+
+      if(!musica){
+        return {
+          error : true,
+          code : 404,
+          msg : "Musica não encontrada"
+        }
+      }
+
+      return {
+        musica : musica,
+        code : 200,
+        msg : "Musica encontrada"
+      }
     } catch (error) {
       console.error(error);
       throw new Error("Erro, contate o suporte");
