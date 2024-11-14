@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema
+const Schema = mongoose.Schema;
 
-const schemaPlaylist = new Schema({
+const schemaPlaylistMundial = new Schema({
     nome : {
         type : String,
         required : true
@@ -14,12 +14,12 @@ const schemaPlaylist = new Schema({
         type : String,
         required : false
     },
-    idUsuario : {
+    categoria : {
         type : String,
-        required : true
-    }
+        required : false
+    },
 });
 
-const Playlist = mongoose.model("Playlist", schemaPlaylist);
+const PlaylistMundial = mongoose.model('PlayListMundial', schemaPlaylistMundial);
 
-module.exports = Playlist;
+module.exports = PlaylistMundial
