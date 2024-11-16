@@ -70,6 +70,31 @@ const PlaylistMundialMusicController = {
             })
         }
     },
+    getByPlaylist : async (req,res) => {
+        try {
+            
+            const { id } = req.params;
+
+            const musicasPlaylistMundial = await PlaylistMundialMusicService.getByPlaylist(id);
+
+            if(musicasPlaylistMundial.error){
+                return res.status(musicasPlaylistMundial.code).json({
+                    msg : musicasPlaylistMundial.msg
+                })
+            }
+
+
+            return res.status(musicasPlaylistMundial.code).json({
+                msg : musicasPlaylistMundial.msg,
+                musicasPlaylistMundial : musicasPlaylistMundial.arrayDetalhado
+            })
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({
+                msg : "Erro, contate o suporte"
+            })
+        }
+    },
     update : async (req,res) => {
         try {
             const { id } = req.params;

@@ -147,6 +147,74 @@ const PlaylistMundialMusicService = {
       throw new Error("Erro, contate o suporte");
     }
   },
+  getByPlaylist: async (id) => {
+    try {
+
+      const playlistMundialMusicas = await PlaylistMundialMusic.find({
+        idPlaylist : id
+      });
+
+
+      // playlistMundialMusicas.forEach((musicas) => {
+
+      //   console.log(musicas);
+        
+      //   if(musicas.playlistMundial.id === id){
+      //     console.log(musicas)
+      //   }
+      // })
+
+      const arrayDetalhado = [];
+
+      for (const musicaPlaylist of playlistMundialMusicas) {
+        const musica = await MusicaService.getOne(musicaPlaylist.idMusica);
+        // Validando se existe a musica
+        if (musica.error) {
+          return {
+            error: true,
+            code: musica.code,
+            msg: musica.msg,
+          };
+        }
+
+        // Validar se existe a playlist
+        const playlistMundial = await PlaylistMundialService.getOne(
+          musicaPlaylist.idPlaylist
+        );
+
+        if (playlistMundial.error) {
+          return {
+            error: true,
+            code: playlistMundial.code,
+            msg: playlistMundial.msg,
+          };
+        }
+
+        const obj = {
+          _id: musicaPlaylist._id,
+          musica: {
+            _id: musica.musica._id,
+            nomeMusica: musica.musica.nome,
+          },
+          playlistMundial: {
+            _id: playlistMundial.playMundial._id,
+            nomePlaylist: playlistMundial.playMundial.nome,
+          },
+        };
+
+        arrayDetalhado.push(obj);
+      }
+
+      return {
+        arrayDetalhado,
+        msg: "Todas as musicas da playlist mundial escolhida",
+        code: 200,
+      };
+    } catch (error) {
+      console.error(error);
+      throw new Error("Erro, contate o suporte");
+    }
+  },
   update: async (id, data) => {
     try {
       const musicaPlaylistMundial = await PlaylistMundialMusic.findById(id);
@@ -210,9 +278,8 @@ const PlaylistMundialMusicService = {
       throw new Error("Erro, contate o suporte");
     }
   },
-  delete : async (id) => {
+  delete: async (id) => {
     try {
-      
       const musicaPlaylistMundial = await PlaylistMundialMusic.findById(id);
 
       if (!musicaPlaylistMundial) {
@@ -224,16 +291,15 @@ const PlaylistMundialMusicService = {
       }
 
       return {
-        msg : "Musica da playlist mundial deletada com sucesso",
-        code : 200,
-        musicaPlaylistMundial : await musicaPlaylistMundial.deleteOne() 
-      }
-
+        msg: "Musica da playlist mundial deletada com sucesso",
+        code: 200,
+        musicaPlaylistMundial: await musicaPlaylistMundial.deleteOne(),
+      };
     } catch (error) {
       console.error(error);
       throw new Error("Erro, contate o suporte");
     }
-  }
+  },
 };
 
 module.exports = PlaylistMundialMusicService;

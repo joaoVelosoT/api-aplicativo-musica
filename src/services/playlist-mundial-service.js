@@ -1,4 +1,5 @@
 const PlaylistMundial = require("../models/PlaylistMundial");
+// const PlaylistMundialMusicService = require("./playlist-mundial-musica-service");
 
 const PlaylistMundialService = {
   create: async (data) => {
@@ -82,6 +83,9 @@ const PlaylistMundialService = {
           msg: "Playlist Mundial não encontrada",
         };
       }
+
+      
+     
 
       return {
         playMundial : await playlist.deleteOne(),

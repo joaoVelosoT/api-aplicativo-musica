@@ -7,11 +7,15 @@ router.post('/', PlaylistMundialMusicaValidate, PlaylistMundialMusicController.c
 
 router.get('/', PlaylistMundialMusicController.getAll)
 
+router.get('/getbyplaylist/:id', PlaylistMundialMusicaValidateId, PlaylistMundialMusicController.getByPlaylist);
+
 router.get('/:id', PlaylistMundialMusicaValidateId, PlaylistMundialMusicController.getOne)
 
 router.put('/:id', PlaylistMundialMusicaValidateId, PlaylistMundialMusicaValidateUpdate, PlaylistMundialMusicController.update)
 
-router.delete('/:id', PlaylistMundialMusicaValidateId, PlaylistMundialMusicController.delete)
+router.delete('/:id', PlaylistMundialMusicaValidateId, PlaylistMundialMusicController.delete);
+
+
 
 
 module.exports = router;
