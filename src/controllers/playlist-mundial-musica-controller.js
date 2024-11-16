@@ -1,4 +1,4 @@
-const PlaylistMundialMusicService = require("../services/playlist-mundial-musica");
+const PlaylistMundialMusicService = require("../services/playlist-mundial-musica-service");
 
 const PlaylistMundialMusicController = {
     create : async (req,res) => {
@@ -25,6 +25,19 @@ const PlaylistMundialMusicController = {
     getAll : async (req,res) => {
         try {
             
+            const todasMusicasPlaylistMundial = await PlaylistMundialMusicService.getAll();
+
+            if(todasMusicasPlaylistMundial.error){
+                return res.status(todasMusicasPlaylistMundial.code).json({
+                    msg : todasMusicasPlaylistMundial.msg
+                })
+            }
+
+            return res.status(todasMusicasPlaylistMundial.code).json({
+                msg : todasMusicasPlaylistMundial.msg,
+                todasMusicasPlaylistMundial : todasMusicasPlaylistMundial.arrayDetalhado
+            })
+
         } catch (error) {
             console.error(error);
             return res.status(500).json({
@@ -34,7 +47,22 @@ const PlaylistMundialMusicController = {
     },
     getOne : async (req,res) => {
         try {
-            
+            const { id } = req.params
+
+            const musicaPlaylistMundial = await PlaylistMundialMusicService.getOne(id);
+
+            if(musicaPlaylistMundial.error){
+                return res.status(musicaPlaylistMundial.code).json({
+                    msg : musicaPlaylistMundial.msg
+                })
+            }
+
+            return res.status(musicaPlaylistMundial.code).json({
+                msg : musicaPlaylistMundial.msg,
+                musicaPlaylistMundial : musicaPlaylistMundial.obj
+            })
+
+
         } catch (error) {
             console.error(error);
             return res.status(500).json({
@@ -44,7 +72,22 @@ const PlaylistMundialMusicController = {
     },
     update : async (req,res) => {
         try {
-            
+            const { id } = req.params;
+            const data = req.musicPlaylist;
+
+            const playMusic = await PlaylistMundialMusicService.update(id, data);
+
+            if(playMusic.error){
+                return res.status(playMusic.code).json({
+                    msg : playMusic.msg
+                })
+            }
+
+
+            return res.status(playMusic.code).json({
+                msg : playMusic.msg,
+                musicaPlaylistMundial : playMusic.playlistMundialMusica
+            })
         } catch (error) {
             console.error(error);
             return res.status(500).json({
@@ -54,7 +97,21 @@ const PlaylistMundialMusicController = {
     },
     delete : async (req,res) => {
         try {
-            
+            const { id } = req.params;
+
+            const playMusic = await PlaylistMundialMusicService.delete(id);
+
+            if(playMusic.error){
+                return res.status(playMusic.code).json({
+                    msg : playMusic.msg
+                })
+            }
+
+
+            return res.status(playMusic.code).json({
+                msg : playMusic.msg,
+                musicaPlaylistMundial : playMusic.musicaPlaylistMundial
+            })
         } catch (error) {
             console.error(error);
             return res.status(500).json({
