@@ -29,6 +29,7 @@ const PlaylistMundialMusicService = {
     // Validar se ja existe a musica na playlist
     const musicaPlaylist = await PlaylistMundialMusic.findOne({
       idMusica: data.idMusica,
+      idPlaylist : data.idPlaylist
     });
 
     if (musicaPlaylist) {
@@ -155,15 +156,7 @@ const PlaylistMundialMusicService = {
       });
 
 
-      // playlistMundialMusicas.forEach((musicas) => {
-
-      //   console.log(musicas);
-        
-      //   if(musicas.playlistMundial.id === id){
-      //     console.log(musicas)
-      //   }
-      // })
-
+      
       const arrayDetalhado = [];
 
       for (const musicaPlaylist of playlistMundialMusicas) {

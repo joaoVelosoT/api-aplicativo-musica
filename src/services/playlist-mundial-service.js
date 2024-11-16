@@ -5,10 +5,10 @@ const PlaylistMundialService = {
   create: async (data) => {
     try {
       return {
-        playMundial : await PlaylistMundial.create(data),
-        msg : "Playlist mundial criada com sucesso !",
-        code : 201
-    }
+        playMundial: await PlaylistMundial.create(data),
+        msg: "Playlist mundial criada com sucesso !",
+        code: 201,
+      };
     } catch (error) {
       console.error(error);
       throw new Error("Erro, contate o suporte");
@@ -16,13 +16,11 @@ const PlaylistMundialService = {
   },
   getAll: async () => {
     try {
-
       return {
-        playMundial : await PlaylistMundial.find(),
-        code : 200,
-        msg : "Todas as playlist mundiais"
-    }
-
+        playMundial: await PlaylistMundial.find(),
+        code: 200,
+        msg: "Todas as playlist mundiais",
+      };
     } catch (error) {
       console.error(error);
       throw new Error("Erro, contate o suporte");
@@ -41,9 +39,9 @@ const PlaylistMundialService = {
       }
 
       return {
-        playMundial : playlist,
-        code : 200,
-        msg : "Playlist Mundial encontrada",
+        playMundial: playlist,
+        code: 200,
+        msg: "Playlist Mundial encontrada",
       };
     } catch (error) {
       console.error(error);
@@ -63,10 +61,10 @@ const PlaylistMundialService = {
       }
 
       return {
-        playMundial : await playlist.updateOne(data),
-        code : 200,
-        msg : "Playlist Mundial deletada com sucesso"
-    }
+        playMundial: await playlist.updateOne(data),
+        code: 200,
+        msg: "Playlist Mundial deletada com sucesso",
+      };
     } catch (error) {
       console.error(error);
       throw new Error("Erro, contate o suporte");
@@ -74,8 +72,10 @@ const PlaylistMundialService = {
   },
   delete: async (id) => {
     try {
-      const playlist = await PlaylistMundial.findOne({ _id: id });
+      const PlaylistMundialMusicService = require("./playlist-mundial-musica-service");
 
+      // Validar se existe a playlist
+      const playlist = await PlaylistMundial.findOne({ _id: id });
       if (!playlist) {
         return {
           error: true,
@@ -84,15 +84,32 @@ const PlaylistMundialService = {
         };
       }
 
+      // console.log(playlist);
       
-     
+      // Pegar todas as musicas da playlist
+      const musicasPlaylist = await PlaylistMundialMusicService.getByPlaylist(
+        playlist._id
+      );
+
+      if(musicasPlaylist.error){
+        return musicasPlaylist
+      }
+      
+      // Percorrer as musicas, para deletar as musicas da playlist
+      musicasPlaylist.arrayDetalhado.forEach(async(musica) => {
+         const musicaDelete = await PlaylistMundialMusicService.delete(musica._id);
+
+         if(musicaDelete.error){
+          return musicaDelete
+         }
+      })
+
 
       return {
         playMundial : await playlist.deleteOne(),
-        code : 200,
-        msg : "Playlist mundial deletada com sucesso"
-
-      }
+        code: 200,
+        msg: "Playlist mundial deletada com sucesso",
+      };
     } catch (error) {
       console.error(error);
       throw new Error("Erro, contate o suporte");
