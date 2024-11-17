@@ -6,12 +6,12 @@ const PlaylistMusicService = {
   create: async (data, idUsuario) => {
     try {
       // Validar se existe a musica
+      // console.log("id no service play",data.idMusica)
       const existeMusica = await MusicaService.getOne(data.idMusica);
-      if (!existeMusica) {
-        return {
-          error: true,
-          msg: "Musica não encontrada",
-        };
+      // console.log(existeMusica);
+      
+      if (existeMusica.error) {
+        return existeMusica
       }
 
       // Validar se existe a playlist
@@ -31,24 +31,32 @@ const PlaylistMusicService = {
       }
 
       // Validar se existe já existe a musica na playlist
-      const musicasPlaylist = await PlaylistMusicService.getAll(idUsuario);
-      const existeMusicPlaylist = () => {
-        var retorno = null;
-        musicasPlaylist.filter((musica) => {
-          if (musica.idMusica === existeMusica.id) {
-            return (retorno = true);
-          }
-        });
-        return retorno;
-      };
+      const musicasPlaylist = await PlaylistMusicService.getByPlaylist(idUsuario, data.idPlaylist);
+      if(musicasPlaylist.error){
+        return musicasPlaylist
+      }
+      // const existeMusicPlaylist = () => {
+      //   var retorno = null;
+      //   musicasPlaylist.filter((musica) => {
+      //     if (musica.idMusica === existeMusica.id) {
+      //       return (retorno = true);
+      //     }
+      //   });
+      //   return retorno;
+      // };
 
       // Se a musica ja existe na playlist, devolver mensagem de erro
-      if (existeMusicPlaylist()) {
-        return {
-          error: true,
-          msg: "Essa musica ja existe na playlist",
-        };
-      }
+
+      musicasPlaylist.forEach((musica) => {
+        console.log(musica);
+      })
+
+      // if (existeMusicPlaylist()) {
+      //   return {
+      //     error: true,
+      //     msg: "Essa musica ja existe na playlist",
+      //   };
+      // }
 
       data.idUsuario = idUsuario;
       const playlistMusic = await PlaylistMusic.create(data);
@@ -263,6 +271,11 @@ const PlaylistMusicService = {
 
         const musica = await MusicaService.getOne(playMusic.idMusica);
 
+        if(musica.error){
+          return musica
+        }
+
+        console.log(musica);
         if (!playlist.error) {
           const obj = {
             _id: playMusic._id,

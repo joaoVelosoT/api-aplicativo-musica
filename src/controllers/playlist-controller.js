@@ -113,15 +113,15 @@ const PlaylistController = {
 
       const playlist = await PlaylistService.delete(id, idUsuario);
 
-      if(!playlist){
-        return res.status(404).json({
-          msg : "Playlist não encontrada"
+      if(playlist.error){
+        return res.status(playlist.code).json({
+          msg : playlist.msg
         })
       };
 
-      return res.status(200).json({
-        msg : "Playlist deletada com sucesso",
-        playlist
+      return res.status(playlist.code).json({
+        msg : playlist.msg,
+        playlist : playlist.playlist
       })
     } catch (error) {
       console.error(error);

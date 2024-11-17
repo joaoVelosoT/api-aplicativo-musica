@@ -49,20 +49,19 @@ const PlaylistService = {
 
       // Usando o for para pegar cada playlist, fazer um get no usuario, e colocar mais dados do usuario no objeto
       for (const playlistObj of playlists) {
-
         // Pegando o user com o id da playlistObj
         const user = await UserService.getOne(playlistObj.idUsuario);
 
         // Criando o objeto com o novo retorno detalhado
         const objetoPlaylist = {
-          _id : playlistObj._id,
+          _id: playlistObj._id,
           nome: playlistObj.nome,
           imagem: playlistObj.imagem,
           descricao: playlistObj.descricao,
           user: {
             idUsuario: playlistObj.idUsuario,
             nomeUsuario: user.nome,
-            emailUsuario : user.email
+            emailUsuario: user.email,
           },
         };
         // Adicionando o objetoPlaylist na playlistDetalhada
@@ -86,12 +85,12 @@ const PlaylistService = {
       });
 
       // Se não achar a playlist, devolver objeto com o erro, code e msg
-      if(!playlist){
+      if (!playlist) {
         return {
-          error : true,
-          code : 404,
-          msg : "Playlist não encontrada"
-        }
+          error: true,
+          code: 404,
+          msg: "Playlist não encontrada",
+        };
       }
 
       // Se achar a playlist, devolver o objeto com o user detalhado
@@ -133,12 +132,31 @@ const PlaylistService = {
   },
   delete: async (id, idUsuario) => {
     try {
+      const PlaylistMusicService = require("./playlist-music-service");
+
       const playlist = await Playlist.findOne({
         _id: id,
         idUsuario: idUsuario,
       });
 
-      return await playlist.deleteOne();
+      if (!playlist) {
+        return {
+          error: true,
+          code: 404,
+          msg: "Playlist não encontrada",
+        };
+      }
+
+      const musicasPlaylist = await PlaylistMusicService.getByPlaylist(idUsuario, playlist._id);
+
+      console.log(musicasPlaylist);
+
+      return {
+        msg: "playlist deletada com sucesso-EM MANUTENÇÃO",
+        code: 200,
+        playlist,
+      };
+      // return await playlist.deleteOne();
     } catch (error) {
       console.error(error);
       throw new Error("Erro, contate o suporte");

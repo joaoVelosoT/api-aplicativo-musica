@@ -8,7 +8,7 @@ const UserService = {
         try {
             // Procurando no banco de dados se existe ja existe esse email
             const existeEmail = await User.findOne({email : data.email});
-            console.log(existeEmail);
+            // console.log(existeEmail);
             if(existeEmail){
                 return null
             }
@@ -69,7 +69,10 @@ const UserService = {
     },
     delete : async(id) => {
         try {
+
             return await User.findByIdAndDelete(id);
+
+            
         } catch (error) {
             console.error(error);
             throw new Error("Erro, contate o suporte");
@@ -83,9 +86,11 @@ const UserService = {
                 return null
             }
             
-            if(!bcrypt.compare(data.senha, user.senha)){
+            if(await bcrypt.compare(data.senha, user.senha) === false){
                 return null
             }
+
+            // console.log(await bcrypt.compare(data.senha, user.senha))
 
             const token = await jwt.sign({
                 id : user._id,

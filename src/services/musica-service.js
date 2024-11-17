@@ -19,8 +19,10 @@ const MusicaService = {
   },
   getOne: async (id) => {
     try {
+      console.log("id na musica",id)
 
       const musica = await Musica.findById(id);
+
 
       if(!musica){
         return {
