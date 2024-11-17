@@ -96,18 +96,18 @@ const UserController = {
   },
   delete: async (req, res) => {
     try {
-      const {id} = req.params;
+      const id = req.user.id;
 
       const user = await UserService.delete(id);
 
-      if(!user){
-        return res.status(404).json({
-          msg : "Usuario nao encontrado"
+      if(user.error){
+        return res.status(user.code).json({
+          msg : user.msg
         })
       }
 
-      return res.status(200).json({
-        msg : "Usuario deletado com sucesso !",
+      return res.status(user.code).json({
+        msg : user.msg,
         user
       })
 

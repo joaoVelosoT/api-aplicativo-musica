@@ -1,5 +1,5 @@
 const MusicaValidate = (req, res, next) => {
-  const { nome, genero, artista } = req.body;
+  const { nome, genero, artista, imagem } = req.body;
 
   if(!nome || typeof nome != 'string'){
     return res.status(400).json({
@@ -14,6 +14,12 @@ const MusicaValidate = (req, res, next) => {
   }
 
   if(!artista || typeof artista != 'string'){
+    return res.status(400).json({
+        msg: "Valide seus dados"
+    })
+  }
+
+  if(!imagem || typeof imagem != 'string'){
     return res.status(400).json({
         msg: "Valide seus dados"
     })

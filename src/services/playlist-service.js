@@ -149,14 +149,17 @@ const PlaylistService = {
 
       const musicasPlaylist = await PlaylistMusicService.getByPlaylist(idUsuario, playlist._id);
 
-      console.log(musicasPlaylist);
+      musicasPlaylist.forEach(async(musica) => {
+          console.log(musica)
+          await PlaylistMusicService.delete(idUsuario, musica._id);
+      })
 
       return {
         msg: "playlist deletada com sucesso-EM MANUTENÇÃO",
         code: 200,
-        playlist,
+        playlist : await playlist.deleteOne(),
       };
-      // return await playlist.deleteOne();
+
     } catch (error) {
       console.error(error);
       throw new Error("Erro, contate o suporte");

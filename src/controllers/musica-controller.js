@@ -6,7 +6,8 @@ const MusicaController = {
             const data = {
                 nome : req.body.nome,
                 genero : req.body.genero,
-                artista : req.body.artista
+                artista : req.body.artista,
+                imagem : req.body.imagem
             }
 
             const musica = await MusicaService.create(data);

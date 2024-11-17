@@ -6,34 +6,30 @@ const PlaylistMusicService = {
   create: async (data, idUsuario) => {
     try {
       // Validar se existe a musica
-      // console.log("id no service play",data.idMusica)
       const existeMusica = await MusicaService.getOne(data.idMusica);
-      // console.log(existeMusica);
-      
       if (existeMusica.error) {
-        return existeMusica
+        return existeMusica;
       }
 
-      // Validar se existe a playlist
 
+      // Validar se existe a playlist
       const existePlaylist = await PlaylistService.getOne(
         data.idPlaylist,
         idUsuario
       );
-
-      console.log(existePlaylist);
-
-      if (!existePlaylist) {
-        return {
-          error: true,
-          msg: "Playlist não encontrada",
-        };
+      if (existePlaylist.error) {
+        return existePlaylist
       }
 
       // Validar se existe já existe a musica na playlist
-      const musicasPlaylist = await PlaylistMusicService.getByPlaylist(idUsuario, data.idPlaylist);
-      if(musicasPlaylist.error){
-        return musicasPlaylist
+
+      // Pegando todas as musicas da playlist
+      const musicasPlaylist = await PlaylistMusicService.getByPlaylist(
+        idUsuario,
+        data.idPlaylist
+      );
+      if (musicasPlaylist.error) {
+        return musicasPlaylist;
       }
       // const existeMusicPlaylist = () => {
       //   var retorno = null;
@@ -47,16 +43,28 @@ const PlaylistMusicService = {
 
       // Se a musica ja existe na playlist, devolver mensagem de erro
 
-      musicasPlaylist.forEach((musica) => {
-        console.log(musica);
-      })
+      const existeMusicaPlaylist = () => {
+        let existeMusicaRetorno = false;
+        musicasPlaylist.forEach(async (musica) => {
+          if (
+            musica.musica.idMusica.toString() ===
+            existeMusica.musica._id.toString()
+          ) {
+            return existeMusicaRetorno = true
+          }
+        });
+        return existeMusicaRetorno
+      };
 
-      // if (existeMusicPlaylist()) {
-      //   return {
-      //     error: true,
-      //     msg: "Essa musica ja existe na playlist",
-      //   };
-      // }
+
+      // Se ja tiver a musica na playlist, devolver mensagem de erro
+      if (await existeMusicaPlaylist()) {
+        return {
+          error: true,
+          code: 400,
+          msg: "Já existe essa musica na playlist",
+        };
+      }
 
       data.idUsuario = idUsuario;
       const playlistMusic = await PlaylistMusic.create(data);
@@ -67,8 +75,8 @@ const PlaylistMusicService = {
           nomePlaylist: existePlaylist.playlist.nomePlaylist,
         },
         musica: {
-          idMusica: existeMusica._id,
-          nomeMusica: existeMusica.nome,
+          idMusica: existeMusica.musica._id,
+          nomeMusica: existeMusica.musica.nome,
         },
         user: {
           idUser: existePlaylist.user._id,
@@ -105,8 +113,8 @@ const PlaylistMusicService = {
               nomePlaylist: playlist.playlist.nomePlaylist,
             },
             musica: {
-              idMusica: musica._id,
-              nomeMusica: musica.nome,
+              idMusica: musica.musica._id,
+              nomeMusica: musica.musica.nome,
             },
             user: {
               idUser: playlist.user._id,
@@ -269,13 +277,18 @@ const PlaylistMusicService = {
           idUsuario
         );
 
-        const musica = await MusicaService.getOne(playMusic.idMusica);
+        // console.log(playMusic.idPlaylist);
+        // console.log(idUsu)
 
-        if(musica.error){
-          return musica
+        // console.log("idMusica", playMusic.idMusica)
+        const musica = await MusicaService.getOne(playMusic.idMusica);
+        // console.log(musica);
+        if (musica.error) {
+          // console.log("caiu aqui")
+          return musica;
         }
 
-        console.log(musica);
+        // console.log(musica);
         if (!playlist.error) {
           const obj = {
             _id: playMusic._id,
@@ -284,8 +297,8 @@ const PlaylistMusicService = {
               nomePlaylist: playlist.playlist.nomePlaylist,
             },
             musica: {
-              idMusica: musica._id,
-              nomeMusica: musica.nome,
+              idMusica: musica.musica._id,
+              nomeMusica: musica.musica.nome,
             },
             user: {
               idUser: playlist.user._id,
@@ -294,6 +307,7 @@ const PlaylistMusicService = {
           };
 
           playlistMusicDetalhada.push(obj);
+          // console.log("adicionou no array");
         }
       }
 

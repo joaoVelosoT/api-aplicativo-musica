@@ -14,11 +14,11 @@ const PlaylistValidate = (req,res,next) => {
         })
     };
 
-    if(!descricao || typeof descricao != 'string'){
-        return res.status(400).json({
-            msg: "Valide seus dados"
-        })
-    };
+    // if(!descricao || typeof descricao != 'string'){
+    //     return res.status(400).json({
+    //         msg: "Valide seus dados"
+    //     })
+    // };
 
     const data = {
         nome : nome,

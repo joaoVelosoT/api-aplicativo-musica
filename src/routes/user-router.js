@@ -17,7 +17,7 @@ router.get('/:id', UserValidateID, UserController.getOne);
 router.put('/:id', UserValidateID, UserController.update);
 
 // Delete user
-router.delete('/:id', UserValidateID, TokenAuthenticate, UserController.delete);
+router.delete('/', TokenAuthenticate, UserController.delete);
 
 // Login user
 router.post('/login', UserValidadeLogin, UserController.login);

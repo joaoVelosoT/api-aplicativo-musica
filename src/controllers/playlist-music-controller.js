@@ -9,7 +9,7 @@ const PlaylistMusicController = {
       );
 
       if (playMusic.error) {
-        return res.status(400).json({
+        return res.status(playMusic.code).json({
           msg: playMusic.msg,
         });
       }
