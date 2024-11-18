@@ -1,4 +1,6 @@
 const Musica = require("../models/Musica");
+const Playlist = require("../models/Playlist");
+const PlaylistMusic = require("../models/Playlist-Music");
 
 const MusicaService = {
   create: async (data) => {
@@ -52,7 +54,27 @@ const MusicaService = {
   },
   delete: async (id) => {
     try {
-      return await Musica.findByIdAndDelete(id);
+
+      // Validando se a musica existe
+      const musica = await MusicaService.getOne(id);
+      if(!musica){
+        return musica
+      }
+      // Pegando todas as playlist que usam essa musica e deletando todas
+      const musicasPlaylist = await PlaylistMusic.find({idMusica : id});
+      musicasPlaylist.forEach(async(musica) => {
+        await musica.deleteOne();
+      })
+
+      
+      return {
+        msg : "Musica deletada com sucesso",
+        code : 200,
+        musica : await Musica.findByIdAndDelete(id)
+      }
+      // return await Musica.findByIdAndDelete(id);
+
+
     } catch (error) {
       console.error(error);
       throw new Error("Erro, contate o suporte");

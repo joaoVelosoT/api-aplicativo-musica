@@ -94,15 +94,15 @@ const MusicaController = {
             const {id} = req.params;
             const musica = await MusicaService.delete(id);
 
-            if(!musica){
-                return res.status(404).json({
-                    msg : "Musica não encontrada"
+            if(musica.error){
+                return res.status(musica.code).json({
+                    msg : musica.msg
                 })
             }
 
-            return res.status(200).json({
-                msg : "Musica deletada com sucesso",
-                musica
+            return res.status(musica.code).json({
+                msg : musica.msg,
+                musica : musica.musica
             })
         } catch (error) {
             console.error(error);
