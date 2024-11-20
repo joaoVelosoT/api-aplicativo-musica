@@ -129,7 +129,10 @@ const UserService = {
         { expiresIn: "10h" }
       );
 
-      return token;
+      return {
+        token,
+        user : user._id
+      };
     } catch (error) {
       console.error(error);
       throw new Error("Erro, contate o suporte");

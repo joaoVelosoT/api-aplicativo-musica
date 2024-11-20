@@ -4,8 +4,9 @@ const connectDB = require('./config/database');
 const app = express();
 const PORT = process.env.PORT || 7050
 const router = require('./routes/router');
+const cors = require('cors');
 
-
+app.use(cors());
 app.use(express.json());
 app.use('/', router);
 
