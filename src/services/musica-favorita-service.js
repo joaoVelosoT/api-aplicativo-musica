@@ -1,17 +1,16 @@
 const MusicaFavorita = require("../models/MusicaFavorista");
 const MusicaService = require("./musica-service");
+const UserService = require("./user-service");
 
 const MusicaFavoritaService = {
   create: async (data, idUsuario) => {
     try {
       data.idUsuario = idUsuario;
+
       // Validando se existe a musica
       const existeMusica = await MusicaService.getOne(data.idMusica);
-      if (!existeMusica) {
-        return {
-          error: true,
-          msg: "Não existe essa musica",
-        };
+      if (existeMusica.error) {
+        return existeMusica
       }
 
       // Validando se ja existe essa musica nos favoritos
@@ -21,12 +20,17 @@ const MusicaFavoritaService = {
       if (existeMusicaFavorita) {
         return {
           error: true,
+          code : 400,
           msg: "Já existe essa musica na playlist",
         };
       }
 
       const musicFavorita = await MusicaFavorita.create(data);
-      return musicFavorita;
+      return {
+        msg : "Musica adicionada aos favoritos",
+        code : 201,
+        musicFavorita
+      };
     } catch (error) {
       console.error(error);
       throw new Error("Erro, contate o suporte");
@@ -34,11 +38,43 @@ const MusicaFavoritaService = {
   },
   getAll: async (idUsuario) => {
     try {
+
       const musicasFavoritas = await MusicaFavorita.find({
         idUsuario: idUsuario,
       });
 
-      return musicasFavoritas;
+      const arrayDetalhado = []
+
+      for(const musica of musicasFavoritas){
+        // Pegando a validando a musica
+        const musicaUser = await MusicaService.getOne(musica.idMusica);
+        if(musicaUser.error){
+          return musicaUser
+        }
+
+        // Pegando a validando o user
+        const user = await UserService.getOne(musica.idUsuario);
+        if(user.error){
+          return user
+        }
+
+        const obj = {
+          _id : musica._id,
+          musica : {
+            _id : musicaUser.musica._id,
+            nomeMusica : musicaUser.musica.nome
+          },
+          usuario : {
+            _id : user._id,
+            nomeUsuario : user.nome
+          }
+        }
+        arrayDetalhado.push(obj);
+      }
+
+      console.log(arrayDetalhado);
+
+      return arrayDetalhado;
     } catch (error) {
       console.error(error);
       throw new Error("Erro, contate o suporte");
@@ -52,10 +88,41 @@ const MusicaFavoritaService = {
       });
 
       if (!musicaFavorita) {
-        return null;
+        return {
+          error : true,
+          code : 404,
+          msg : "Musica favorita não encontrada"
+        };
       }
 
-      return musicaFavorita;
+      // Pegando a validando a musica
+      const musicaUser = await MusicaService.getOne(musicaFavorita.idMusica);
+      if(musicaUser.error){
+        return musicaUser
+      }
+
+      // Pegando a validando o user
+      const user = await UserService.getOne(musicaFavorita.idUsuario);
+      if(user.error){
+        return user
+      }
+
+      const obj = {
+        _id : musicaFavorita._id,
+        musica : {
+          _id : musicaUser.musica._id,
+          nomeMusica : musicaUser.musica.nome
+        },
+        usuario : {
+          _id : user._id,
+          nomeUsuario : user.nome
+        }
+      }
+
+
+      
+
+      return obj;
     } catch (error) {
       console.error(error);
       throw new Error("Erro, contate o suporte");

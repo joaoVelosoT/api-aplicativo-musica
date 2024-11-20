@@ -10,14 +10,14 @@ const MusicaFavoritaController = {
             
             const musicFavorita = await MusicaFavoritaService.create(data, id);
             if(musicFavorita.error){
-                return res.status(400).json({
+                return res.status(musicFavorita.code).json({
                     msg : musicFavorita.msg
                 })
             }
 
-            return res.status(200).json({
-                msg : "Musica favorita adicionada com sucesso",
-                musicFavorita
+            return res.status(musicFavorita.code).json({
+                msg : musicFavorita.msg,
+                musicFavorita : musicFavorita.musicFavorita
             })
 
         } catch (error) {
