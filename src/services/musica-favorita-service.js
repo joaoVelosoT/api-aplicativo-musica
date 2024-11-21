@@ -16,6 +16,7 @@ const MusicaFavoritaService = {
       // Validando se ja existe essa musica nos favoritos
       const existeMusicaFavorita = await MusicaFavorita.findOne({
         idMusica: data.idMusica,
+        idUsuario : idUsuario
       });
       if (existeMusicaFavorita) {
         return {
@@ -62,7 +63,11 @@ const MusicaFavoritaService = {
           _id : musica._id,
           musica : {
             _id : musicaUser.musica._id,
-            nomeMusica : musicaUser.musica.nome
+            nomeMusica : musicaUser.musica.nome,
+            imagemMusica : musicaUser.musica.imagem,
+            generoMusica : musicaUser.musica.genero,
+            artista : musicaUser.musica.artista
+
           },
           usuario : {
             _id : user._id,
@@ -111,7 +116,10 @@ const MusicaFavoritaService = {
         _id : musicaFavorita._id,
         musica : {
           _id : musicaUser.musica._id,
-          nomeMusica : musicaUser.musica.nome
+            nomeMusica : musicaUser.musica.nome,
+            imagemMusica : musicaUser.musica.imagem,
+            generoMusica : musicaUser.musica.genero,
+            artista : musicaUser.musica.artista
         },
         usuario : {
           _id : user._id,
