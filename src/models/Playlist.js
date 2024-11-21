@@ -8,7 +8,7 @@ const schemaPlaylist = new Schema({
     },
     imagem : {
         type : String,
-        required : true
+        required : false
     },
     descricao : {
         type : String,

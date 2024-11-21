@@ -1,5 +1,5 @@
 const UserValidate = (req, res, next) => {
-  const { nome, email, senha } = req.body;
+  const { nome, email, senha, fotoPerfil} = req.body;
 
   if (!nome || typeof nome != "string") {
     return res.status(400).json({
@@ -18,11 +18,24 @@ const UserValidate = (req, res, next) => {
       msg: "Valide seus dados",
     });
   }
+
+  if (!fotoPerfil || typeof fotoPerfil != 'string'){
+    const data = {
+      nome: nome,
+      email : email,
+      senha : senha,
+      fotoPerfil : "https://static.vecteezy.com/ti/vetor-gratis/p1/26434417-padrao-avatar-perfil-icone-do-social-meios-de-comunicacao-do-utilizador-foto-vetor.jpg"
+    }
+  
+    req.user = data
+    return next();
+  }
   
   const data = {
     nome: nome,
     email : email,
-    senha : senha
+    senha : senha,
+    fotoPerfil : fotoPerfil
   }
 
   req.user = data

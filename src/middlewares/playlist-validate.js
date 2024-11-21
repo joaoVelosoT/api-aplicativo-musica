@@ -9,9 +9,16 @@ const PlaylistValidate = (req,res,next) => {
     };
 
     if(!imagem || typeof imagem != 'string'){
-        return res.status(400).json({
-            msg: "Valide seus dados"
-        })
+        const data = {
+            nome : nome,
+            imagem : "https://cdn.icon-icons.com/icons2/3873/PNG/512/music_playlist_icon_244657.png",
+            descricao : descricao
+        }
+    
+        req.playlist = data;
+    
+    
+        return next();
     };
 
     // if(!descricao || typeof descricao != 'string'){
@@ -19,6 +26,8 @@ const PlaylistValidate = (req,res,next) => {
     //         msg: "Valide seus dados"
     //     })
     // };
+
+
 
     const data = {
         nome : nome,

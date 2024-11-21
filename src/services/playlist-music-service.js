@@ -307,6 +307,9 @@ const PlaylistMusicService = {
             musica: {
               idMusica: musica.musica._id,
               nomeMusica: musica.musica.nome,
+              imagemMusica : musica.musica.imagem,
+              generoMusica : musica.musica.genero,
+              artista : musica.musica.artista
             },
             user: {
               idUser: playlist.user._id,
