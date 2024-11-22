@@ -29,7 +29,7 @@ const PlaylistMundialMusicService = {
     // Validar se ja existe a musica na playlist
     const musicaPlaylist = await PlaylistMundialMusic.findOne({
       idMusica: data.idMusica,
-      idPlaylist : data.idPlaylist
+      idPlaylist: data.idPlaylist,
     });
 
     if (musicaPlaylist) {
@@ -82,6 +82,9 @@ const PlaylistMundialMusicService = {
         musica: {
           _id: musica.musica._id,
           nomeMusica: musica.musica.nome,
+          imagemMusica: musica.musica.imagem,
+          generoMusica: musica.musica.genero,
+          artista: musica.musica.artista,
         },
         playlistMundial: {
           _id: playlistMundial.playMundial._id,
@@ -131,6 +134,9 @@ const PlaylistMundialMusicService = {
         musica: {
           _id: musica.musica._id,
           nomeMusica: musica.musica.nome,
+          imagemMusica: musica.musica.imagem,
+          generoMusica: musica.musica.genero,
+          artista: musica.musica.artista,
         },
         playlistMundial: {
           _id: playlistMundial.playMundial._id,
@@ -150,13 +156,10 @@ const PlaylistMundialMusicService = {
   },
   getByPlaylist: async (id) => {
     try {
-
       const playlistMundialMusicas = await PlaylistMundialMusic.find({
-        idPlaylist : id
+        idPlaylist: id,
       });
 
-
-      
       const arrayDetalhado = [];
 
       for (const musicaPlaylist of playlistMundialMusicas) {
@@ -187,7 +190,10 @@ const PlaylistMundialMusicService = {
           _id: musicaPlaylist._id,
           musica: {
             _id: musica.musica._id,
-            nomeMusica: musica.musica.nome,
+          nomeMusica: musica.musica.nome,
+          imagemMusica: musica.musica.imagem,
+          generoMusica: musica.musica.genero,
+          artista: musica.musica.artista,
           },
           playlistMundial: {
             _id: playlistMundial.playMundial._id,
