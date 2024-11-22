@@ -119,6 +119,52 @@ const MusicaFavoritaController = {
             })
         }
     },
+    deletebymusic : async(req,res) =>  {
+        try {
+            const idUsuario = req.user.id;
+            const { id } = req.params;
+
+            const musicaFavorita = await MusicaFavoritaService.deletebymusic(idUsuario, id);
+
+            if(musicaFavorita.error){
+                return res.status(musicaFavorita.code).json({
+                  msg : musicaFavorita.msg
+                })
+              }
+            return res.status(200).json({
+                msg : "Musica Favorita deletada com sucesso",
+                musicaFavorita
+            })
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({
+                msg : "Erro, contate o suporte"
+            })
+        }
+    },
+    getbymusic : async (req,res) => {
+        try {
+            const idUsuario = req.user.id;
+            const{id} = req.params
+            const musicaFavorita = await MusicaFavoritaService.getbymusic(idUsuario, id);
+
+            if(musicaFavorita.error){
+                return res.status(musicaFavorita.code).json({
+                    msg : musicaFavorita.msg
+                })
+            }
+
+            return res.status(musicaFavorita.code).json({
+                msg : musicaFavorita.msg,
+                musicaFavorita : musicaFavorita.musicaFavorita
+            })
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({
+                msg : "Erro, contate o suporte"
+            })
+        }
+    }
 }
 
 

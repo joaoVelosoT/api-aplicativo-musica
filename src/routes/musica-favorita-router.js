@@ -8,17 +8,22 @@ const MusicaFavoritaController = require('../controllers/musica-favorita-control
 // Create musica favorita
 router.post('/', TokenAuthenticate, MusicaFavoritaValidate,MusicaFavoritaController.create);
 
-// GetAll musicas favortias
+// GetAll musicas favoritas
 router.get('/', TokenAuthenticate, MusicaFavoritaController.getAll);
 
 // GetOne musica favorita
 router.get('/:id', TokenAuthenticate, MusicaFavoritaValidateID, MusicaFavoritaController.getOne);
+
+// GetByMusic
+router.get('/getbymusic/:id', TokenAuthenticate,MusicaFavoritaValidateID, MusicaFavoritaController.getbymusic);
 
 // Update Musica favorita
 router.put('/:id', TokenAuthenticate, MusicaFavoritaValidateID, MusicaFavoritaValidate, MusicaFavoritaController.update);
 
 // Delete musica favorita
 router.delete('/:id', TokenAuthenticate, MusicaFavoritaValidateID, MusicaFavoritaController.delete);
+
+router.delete('/deletebymusic/:id', TokenAuthenticate, MusicaFavoritaValidateID, MusicaFavoritaController.deletebymusic)
 
 
 

@@ -195,6 +195,47 @@ const MusicaFavoritaService = {
       throw new Error("Erro, contate o suporte");
     }
   },
+  deletebymusic: async (idUsuario, id) => {
+    try {
+
+      const musicaFavorita = await MusicaFavorita.findOne({idMusica : id, idUsuario : idUsuario});
+      
+      if(!musicaFavorita){
+        return {
+          error : true,
+          code : 404,
+          msg : "Musica não encontrada na playlist"
+        }
+      }
+      return await musicaFavorita.deleteOne();
+    } catch (error) {
+      console.error(error);
+      throw new Error("Erro, contate o suporte");
+    }
+  },
+  getbymusic : async (idUsuario, id) => {
+    try {
+      
+      const musicaFavorita = await MusicaFavorita.findOne({idMusica : id, idUsuario : idUsuario});
+
+      if(!musicaFavorita){
+        return {
+          error : true,
+          code : 404,
+          msg : "Musica não encontrada"
+        }
+      }
+
+      return {
+        code : 200,
+        msg : "Musica enconcontrada com sucesso",
+        musicaFavorita
+      }
+    } catch (error) {
+      console.error(error);
+      throw new Error("Erro, contate o suporte");
+    }
+  }
 };
 
 module.exports = MusicaFavoritaService;
