@@ -113,7 +113,7 @@ const PlaylistMusicService = {
               nomePlaylist: playlist.playlist.nomePlaylist,
             },
             musica: {
-              idMusica: musica.musica._id,
+              _id: musica.musica._id,
               nomeMusica: musica.musica.nome,
               imagemMusica : musica.musica.imagem,
               generoMusica : musica.musica.genero,
@@ -305,7 +305,7 @@ const PlaylistMusicService = {
               nomePlaylist: playlist.playlist.nomePlaylist,
             },
             musica: {
-              idMusica: musica.musica._id,
+              _id: musica.musica._id,
               nomeMusica: musica.musica.nome,
               imagemMusica : musica.musica.imagem,
               generoMusica : musica.musica.genero,
