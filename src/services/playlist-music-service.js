@@ -31,15 +31,7 @@ const PlaylistMusicService = {
       if (musicasPlaylist.error) {
         return musicasPlaylist;
       }
-      // const existeMusicPlaylist = () => {
-      //   var retorno = null;
-      //   musicasPlaylist.filter((musica) => {
-      //     if (musica.idMusica === existeMusica.id) {
-      //       return (retorno = true);
-      //     }
-      //   });
-      //   return retorno;
-      // };
+      
 
       // Se a musica ja existe na playlist, devolver mensagem de erro
 
@@ -47,7 +39,7 @@ const PlaylistMusicService = {
         let existeMusicaRetorno = false;
         musicasPlaylist.forEach(async (musica) => {
           if (
-            musica.musica.idMusica.toString() ===
+            musica.musica._id.toString() ===
             existeMusica.musica._id.toString()
           ) {
             return existeMusicaRetorno = true
